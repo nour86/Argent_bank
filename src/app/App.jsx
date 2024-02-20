@@ -1,15 +1,10 @@
-import { useState } from 'react'
-import './App.css'
+import AppRoutes from '../utils/Routes'
 
 function App() {
-    const [count, setCount] = useState(0)
-
     return (
-        <>
-            <button onClick={() => setCount((count) => count + 1)}>
-                count is {count}
-            </button>
-        </>
+        <div>
+            <AppRoutes />
+        </div>
     )
 }
 
