@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import Logo from '../../../images/argentBankLogo.png'
+import Logo from '../../../assets/images/argentBankLogo.png'
 import { useState } from 'react'
 
 function Header() {
