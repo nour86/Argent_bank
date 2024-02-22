@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from '../../pages/Home'
-import Login from '../../pages/Login'
-import User from '../../pages/User'
-import Header from '../layout/Header'
-import Footer from '../layout/Footer'
+import Home from '../../pages/home/Home'
+import Login from '../../pages/login/Login'
+import User from '../../pages/user/User'
+import Header from '../layout/header/Header'
+import Footer from '../layout/footer/Footer'
 
 export default function AppRoutes() {
     return (

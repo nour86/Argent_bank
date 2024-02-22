@@ -15,7 +15,7 @@ function Header() {
                 <NavLink to="/home" className="main-nav-logo">
                     <img
                         src={Logo}
-                        className="main-nav-log-image"
+                        className="main-nav-logo-image"
                         alt="Argent Bank logo"
                     />
                 </NavLink>
