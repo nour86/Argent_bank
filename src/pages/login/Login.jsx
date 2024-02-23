@@ -1,4 +1,4 @@
-import SignUpForm from '../../components/signUpForm/SignUpForm'
+import LoginForm from '../../components/loginForm/LoginForm'
 
 export default function Login() {
     return (
@@ -6,7 +6,7 @@ export default function Login() {
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>
-                <SignUpForm />
+                <LoginForm />
             </section>
         </main>
     )
