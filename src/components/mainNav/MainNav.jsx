@@ -8,7 +8,7 @@ export const MainNav = () => {
 
     console.log('mainNav rerender')
 
-    const handleloggin = () => {
+    const handleLoggOut = () => {
         isAuth && dispatch(logOutSucces())
     }
 
@@ -23,7 +23,7 @@ export const MainNav = () => {
                     <NavLink
                         to="/home"
                         className="main-nav-item"
-                        onClick={handleloggin}
+                        onClick={handleLoggOut}
                     >
                         <i className="fa fa-sign-out"></i>
                         Sign Out

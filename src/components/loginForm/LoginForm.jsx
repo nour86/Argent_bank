@@ -1,36 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useLoaderData } from 'react-router-dom'
+import { saveInLocalStorage } from '../../Redux/services/localStorageServices'
+import { useDispatch } from 'react-redux'
+import { loginSuccess } from '../../Redux/reducers/loginReducer'
 
 const LoginForm = () => {
     const data = useLoaderData()
-    console.log(data)
-    const [email, setEmail] = useState(data.email)
-    const [password, setPassword] = useState(data.password)
-    const [rememberMe, setRememberMe] = useState(data.email && data.password)
+    const dispatch = useDispatch()
+    const [email, setEmail] = useState(data.email ? data.email : '')
+    const [password, setPassword] = useState(data.password ? data.password : '')
+    const [rememberMe, setRememberMe] = useState(email && password)
     console.log('loginForm rerender')
-
-    /***  useEffect pour pré-remplir les champs d'e-mail et de mot de passe après la déconnexion ***/
-    // useEffect(() => {
-    //     const savedData = getDataFromLocalStorage()
-    //     const [savedEmail, savedPassword] = [
-    //         savedData.email,
-    //         savedData.password,
-    //     ]
-    //     // if userEmail & saveEmail arent null => rememberMe was checked
-    //     const rememberMeChecked = savedEmail && savedPassword
-
-    //     /***  Si la case "Remember me" était cochée, pré-remplit les champs d'e-mail et de mot de passe ***/
-    //     if (rememberMeChecked) {
-    //         setEmail(savedEmail)
-    //         setPassword(savedPassword)
-    //         setRememberMe(true)
-    //     } else {
-    //         /***  Sinon, réinitialise les champs d'e-mail et de mot de passe ***/
-    //         setEmail('')
-    //         setPassword('')
-    //         setRememberMe(false)
-    //     }
-    // }, []) /*** Exécuter à l'ouverture de la page ***/
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
@@ -51,7 +31,7 @@ const LoginForm = () => {
         e.preventDefault()
         const token = 'token'
         saveInLocalStorage(email, password, token, rememberMe)
-        console.log(window.localStorage)
+        dispatch(loginSuccess())
     }
 
     return (
@@ -90,20 +70,6 @@ const LoginForm = () => {
             <button className="sign-in-button">Sign In</button>
         </form>
     )
-}
-
-const saveInLocalStorage = (email, password, token, rememberMe) => {
-    console.log('saveIn function')
-    let dataToSave = {}
-    rememberMe
-        ? (dataToSave = {
-              userEmail: email,
-              userPassword: password,
-              userToken: token,
-          })
-        : (dataToSave = { userToken: token })
-    const payload = JSON.stringify(dataToSave)
-    window.localStorage.setItem('ArgentBank', payload)
 }
 
 export default LoginForm

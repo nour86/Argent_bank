@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Home from '../../pages/home/Home'
 import Login from '../../pages/login/Login'
@@ -18,9 +18,14 @@ const Layout = ({ children }) => {
     )
 }
 
-const PrivateUserRoute = () => {
+export function PrivateRoute({ children }) {
     const isAuth = useSelector((state) => state.login.isAuth)
-    return isAuth ? <User /> : <Home />
+    if (!isAuth) {
+        return <Navigate to={'/home'} />
+    } else {
+        // user not logged in, redirect to the login page
+        return children
+    }
 }
 
 const router = createBrowserRouter([
@@ -53,7 +58,9 @@ const router = createBrowserRouter([
         path: '/user',
         element: (
             <Layout>
-                <PrivateUserRoute />
+                <PrivateRoute>
+                    <User />
+                </PrivateRoute>
             </Layout>
         ),
     },
