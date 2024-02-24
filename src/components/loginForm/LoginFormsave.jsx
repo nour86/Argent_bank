@@ -1,36 +1,33 @@
 import { useState, useEffect } from 'react'
-import { useLoaderData } from 'react-router-dom'
 
 const LoginForm = () => {
-    const data = useLoaderData()
-    console.log(data)
-    const [email, setEmail] = useState(data.email)
-    const [password, setPassword] = useState(data.password)
-    const [rememberMe, setRememberMe] = useState(data.email && data.password)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [rememberMe, setRememberMe] = useState(false)
     console.log('loginForm rerender')
 
     /***  useEffect pour pré-remplir les champs d'e-mail et de mot de passe après la déconnexion ***/
-    // useEffect(() => {
-    //     const savedData = getDataFromLocalStorage()
-    //     const [savedEmail, savedPassword] = [
-    //         savedData.email,
-    //         savedData.password,
-    //     ]
-    //     // if userEmail & saveEmail arent null => rememberMe was checked
-    //     const rememberMeChecked = savedEmail && savedPassword
+    useEffect(() => {
+        const savedData = getDataFromLocalStorage()
+        const [savedEmail, savedPassword] = [
+            savedData.email,
+            savedData.password,
+        ]
+        // if userEmail & saveEmail arent null => rememberMe was checked
+        const rememberMeChecked = savedEmail && savedPassword
 
-    //     /***  Si la case "Remember me" était cochée, pré-remplit les champs d'e-mail et de mot de passe ***/
-    //     if (rememberMeChecked) {
-    //         setEmail(savedEmail)
-    //         setPassword(savedPassword)
-    //         setRememberMe(true)
-    //     } else {
-    //         /***  Sinon, réinitialise les champs d'e-mail et de mot de passe ***/
-    //         setEmail('')
-    //         setPassword('')
-    //         setRememberMe(false)
-    //     }
-    // }, []) /*** Exécuter à l'ouverture de la page ***/
+        /***  Si la case "Remember me" était cochée, pré-remplit les champs d'e-mail et de mot de passe ***/
+        if (rememberMeChecked) {
+            setEmail(savedEmail)
+            setPassword(savedPassword)
+            setRememberMe(true)
+        } else {
+            /***  Sinon, réinitialise les champs d'e-mail et de mot de passe ***/
+            setEmail('')
+            setPassword('')
+            setRememberMe(false)
+        }
+    }, []) /*** Exécuter à l'ouverture de la page ***/
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
@@ -90,6 +87,14 @@ const LoginForm = () => {
             <button className="sign-in-button">Sign In</button>
         </form>
     )
+}
+
+const getDataFromLocalStorage = () => {
+    console.log('getfrom function')
+    const ABStorage = JSON.parse(window.localStorage.getItem('ArgentBank'))
+    const email = ABStorage?.userEmail
+    const password = ABStorage?.userPassword
+    return { email, password }
 }
 
 const saveInLocalStorage = (email, password, token, rememberMe) => {
