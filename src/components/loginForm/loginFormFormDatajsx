@@ -1,56 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginSuccess } from '../../Redux/reducers/loginReducer'
+import { useState, useEffect, useMemo } from 'react'
 
-const LoginForm = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [rememberMe, setRememberMe] = useState(false)
-    console.log('loginForm rerender')
+export default function LoginForm() {
+    console.log('LoginForm Rerender')
 
-    /***  useEffect pour pré-remplir les champs d'e-mail et de mot de passe après la déconnexion ***/
-    useEffect(() => {
-        const savedData = getDataFromLocalStorage()
-        const [savedEmail, savedPassword] = [
-            savedData.email,
-            savedData.password,
-        ]
-        // if userEmail & saveEmail arent null => rememberMe was checked
-        const rememberMeChecked = savedEmail && savedPassword
+    // retrieve data from localStorage once
 
-        /***  Si la case "Remember me" était cochée, pré-remplit les champs d'e-mail et de mot de passe ***/
-        if (rememberMeChecked) {
-            setEmail(savedEmail)
-            setPassword(savedPassword)
-            setRememberMe(true)
-        } else {
-            /***  Sinon, réinitialise les champs d'e-mail et de mot de passe ***/
-            setEmail('')
-            setPassword('')
-            setRememberMe(false)
-        }
-    }, []) /*** Exécuter à l'ouverture de la page ***/
+    const savedData = getDataFromLocalStorage()
+    const [savedEmail, savedPassword] = [savedData.email, savedData.password]
+    console.log(savedData)
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value)
-        setPassword('')
-        setRememberMe(false)
-    }
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value)
-        setRememberMe(false)
-    }
+    // if userEmail & saveEmail arent null => rememberMe was checked
 
-    const toggleleRememberMe = (e) => {
-        setRememberMe(!rememberMe)
-    }
+    let rememberMe = savedEmail && savedPassword
+
+    // handle Submit then save in LocalStorage
 
     const handleSubmit = (e) => {
         console.log('handlesub function')
         e.preventDefault()
+        const formData = new FormData(e.target)
+        const email = formData.get('email')
+        const password = formData.get('password')
+        const rememberMe = formData.get('remembercheck')
         const token = 'token'
         saveInLocalStorage(email, password, token, rememberMe)
         console.log(window.localStorage)
     }
 
+    // defaultValues are filled or not
     return (
         <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
@@ -59,8 +38,7 @@ const LoginForm = () => {
                     name="email"
                     type="email"
                     id="email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    defaultValue={savedEmail}
                 />
             </div>
             <div className="input-wrapper">
@@ -69,9 +47,7 @@ const LoginForm = () => {
                     name="password"
                     type="password"
                     id="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
+                    defaultValue={savedPassword}
                 />
             </div>
             <div className="input-remember">
@@ -79,8 +55,7 @@ const LoginForm = () => {
                     name="remembercheck"
                     type="checkbox"
                     id="remember-me"
-                    checked={rememberMe}
-                    onChange={toggleleRememberMe}
+                    defaultChecked={rememberMe}
                 />
                 <label htmlFor="remember-me">Remember me</label>
             </div>
@@ -110,5 +85,3 @@ const saveInLocalStorage = (email, password, token, rememberMe) => {
     const payload = JSON.stringify(dataToSave)
     window.localStorage.setItem('ArgentBank', payload)
 }
-
-export default LoginForm
