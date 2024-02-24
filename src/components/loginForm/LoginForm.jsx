@@ -1,46 +1,40 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { loginSuccess } from '../../Redux/reducers/loginReducer'
+import { useState, useEffect, useMemo } from 'react'
 import { rememberMe } from '../../Redux/reducers/userReducer'
-import { useState, useEffect } from 'react'
 
 export default function LoginForm() {
-    const dispatch = useDispatch()
-    const isRemembered = useSelector((state) => state.user.isRemembered)
-    console.log(window.localStorage)
+    console.log('LoginForm Rerender')
 
-    const localS = window.localStorage.getItem('ArgentBank')
-    console.log(localS)
-    const localS2 = JSON.parse(localS)
-    const savedEmail = localS2.userEmail
-    console.log(savedEmail)
-    const savedPassword = window.localStorage.getItem('userPassword')
+    const savedData = useMemo(() => {
+        console.log('dataretrieve')
+        return getFromLocalStorage()
+    }, [])
 
-    const toggleRememberMe = () => {
-        dispatch(rememberMe())
-    }
+    const [savedEmail, savedPassword] = [savedData.email, savedData.password]
+    let rememberMe = savedEmail && savedPassword
 
     const handleSubmit = (e) => {
+        console.log('handlesub function')
         e.preventDefault()
         const formData = new FormData(e.target)
-
-        const payload = JSON.stringify({
-            userEmail: formData.get('username'),
-            userPassword: formData.get('password'),
-        })
-        window.localStorage.setItem('ArgentBank', payload)
+        console.log(formData)
+        const email = formData.get('email')
+        const password = formData.get('password')
+        const rememberMe = formData.get('remembercheck')
+        const token = 'token'
+        saveInLocalStorage(email, password, token, rememberMe)
         console.log(window.localStorage)
-        // dispatch(loginSuccess())
-        // console.log(window.localStorage)
     }
 
     return (
         <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="email">Email</label>
                 <input
-                    name="username"
+                    name="email"
                     type="text"
-                    id="username"
+                    id="email"
                     defaultValue={savedEmail}
                 />
             </div>
@@ -55,14 +49,36 @@ export default function LoginForm() {
             </div>
             <div className="input-remember">
                 <input
+                    name="remembercheck"
                     type="checkbox"
                     id="remember-me"
-                    checked={isRemembered}
-                    onChange={toggleRememberMe}
+                    defaultChecked={rememberMe}
                 />
                 <label htmlFor="remember-me">Remember me</label>
             </div>
             <button className="sign-in-button">Sign In</button>
         </form>
     )
+}
+
+const getFromLocalStorage = () => {
+    console.log('getfrom function')
+    const ABStorage = JSON.parse(window.localStorage.getItem('ArgentBank'))
+    const email = ABStorage.userEmail
+    const password = ABStorage.userPassword
+    return { email, password }
+}
+
+const saveInLocalStorage = (email, password, token, rememberMe) => {
+    console.log('saveIn function')
+    let dataToSave = {}
+    rememberMe
+        ? (dataToSave = {
+              userEmail: email,
+              userPassword: password,
+              userToken: token,
+          })
+        : (dataToSave = { userToken: token })
+    const payload = JSON.stringify(dataToSave)
+    window.localStorage.setItem('ArgentBank', payload)
 }
