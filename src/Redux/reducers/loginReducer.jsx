@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const loginState = {
-    isAuth: false,
+    isAuth: JSON.parse(window.localStorage.getItem('ArgentBank'))?.isAuth,
     error: null,
 }
 
@@ -17,12 +17,12 @@ const loginSlice = createSlice({
             state.isAuth = false
             state.error = action.payload
         },
-        logOutSucces: (state) => {
+        logoutSuccess: (state) => {
             state.isAuth = false
             state.error = null
         },
     },
 })
 
-export const { loginSuccess, loginFail, logOutSucces } = loginSlice.actions
+export const { loginSuccess, loginFail, logoutSuccess } = loginSlice.actions
 export const loginReducer = loginSlice.reducer

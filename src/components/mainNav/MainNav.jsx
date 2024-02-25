@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { logOutSucces } from '../../Redux/reducers/loginReducer'
+import { logoutSuccess } from '../../Redux/reducers/loginReducer'
 import { NavLink } from 'react-router-dom'
 
 export const MainNav = () => {
@@ -9,7 +9,7 @@ export const MainNav = () => {
     console.log('mainNav rerender')
 
     const handleLoggOut = () => {
-        isAuth && dispatch(logOutSucces())
+        isAuth && dispatch(logoutSuccess())
     }
 
     return (

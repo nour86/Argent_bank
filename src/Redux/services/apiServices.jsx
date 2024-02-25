@@ -3,33 +3,34 @@ import {
     loginFail,
     loginSuccess,
     logoutSuccess,
-    isToken,
-} from '../actions/loginAction'
-import {
-    userFail,
-    userLogout,
-    userSuccess,
-    userUpdateSuccess,
-    userUpdateFail,
-} from '../actions/userAction'
+} from '../reducers/loginReducer'
+// import {
+//     userFail,
+//     userLogout,
+//     userSuccess,
+//     userUpdateSuccess,
+//     userUpdateFail,
+// } from '../actions/userAction'
+
+import { updateLocalStorage } from './localStorageServices'
 
 /*** partie Api ***/
 const BASE_URL = 'http://localhost:3001/api/v1'
-const ABStorage = JSON.parse(window.localStorage.getItem('ArgentBank'))
 
-/***  Inside your login function ***/
+/***  login function ***/
 export const login = (email, password, rememberMe) => (dispatch) => {
     axios
         .post(BASE_URL + '/user/login', { email, password })
         .then((response) => {
             const token = response.data.body.token
-            if (!rememberMe) {
-                localStorage.setItem('token', JSON.stringify(token))
-            } else {
-                sessionStorage.setItem('token', JSON.stringify(token))
-            }
-            dispatch(loginSuccess(response.data))
-            console.log(response)
+
+            updateLocalStorage(rememberMe, [
+                { email: email },
+                { password: password },
+                { token: token },
+            ])
+
+            dispatch(loginSuccess())
             return response.data
         })
         .catch((err) => {

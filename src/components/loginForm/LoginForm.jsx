@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react'
-import { useLoaderData } from 'react-router-dom'
-import { saveInLocalStorage } from '../../Redux/services/localStorageServices'
-import { useDispatch } from 'react-redux'
-import { loginSuccess } from '../../Redux/reducers/loginReducer'
+import { useState } from 'react'
+import { useLoaderData, Navigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import auth_service from '../../Redux/services/apiServices'
 
 const LoginForm = () => {
-    const data = useLoaderData()
+    const localData = useLoaderData()
     const dispatch = useDispatch()
-    const [email, setEmail] = useState(data.email ? data.email : '')
-    const [password, setPassword] = useState(data.password ? data.password : '')
-    const [rememberMe, setRememberMe] = useState(email && password)
+
+    const [email, setEmail] = useState(localData.email)
+    const [password, setPassword] = useState(localData.password)
+    const [rememberMe, setRememberMe] = useState(
+        localData.email !== '' && localData.password !== ''
+    )
+
+    const isAuth = useSelector((state) => state.login.isAuth)
+    const error = useSelector((state) => state.login.error)
+
+    console.log(rememberMe)
     console.log('loginForm rerender')
 
     const handleEmailChange = (e) => {
@@ -29,12 +36,12 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         console.log('handlesub function')
         e.preventDefault()
-        const token = 'token'
-        saveInLocalStorage(email, password, token, rememberMe)
-        dispatch(loginSuccess())
+        dispatch(auth_service.login(email, password, rememberMe))
     }
 
-    return (
+    return isAuth ? (
+        <Navigate replace to="/user" />
+    ) : (
         <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
                 <label htmlFor="email">Email</label>
@@ -68,6 +75,7 @@ const LoginForm = () => {
                 <label htmlFor="remember-me">Remember me</label>
             </div>
             <button className="sign-in-button">Sign In</button>
+            {error !== null ? <label className="error">{error}</label> : ''}
         </form>
     )
 }
