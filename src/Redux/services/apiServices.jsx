@@ -18,7 +18,7 @@ import { updateLocalStorage } from './localStorageServices'
 const BASE_URL = 'http://localhost:3001/api/v1'
 
 /***  login function ***/
-export const login = (email, password, rememberMe) => (dispatch) => {
+export const login = (email, password, rememberMe) => (callback) => {
     axios
         .post(BASE_URL + '/user/login', { email, password })
         .then((response) => {
@@ -30,11 +30,12 @@ export const login = (email, password, rememberMe) => (dispatch) => {
                 { token: token },
             ])
 
-            dispatch(loginSuccess())
+            callback(loginSuccess())
+            console.log(response.data)
             return response.data
         })
         .catch((err) => {
-            dispatch(loginFail(err.response.data.message))
+            callback(loginFail(err.response.data.message))
         })
 }
 
@@ -89,7 +90,7 @@ export const updateProfile = (userName, value_token) => (dispatch) => {
 /***  Logout function ***/
 export const logout = () => (dispatch) => {
     sessionStorage.clear()
-    localStorage.removeItem('token')
+    updateLocalStorage(rememberMe, [{ token: '' }])
     dispatch(userLogout())
     dispatch(logoutSuccess())
 }

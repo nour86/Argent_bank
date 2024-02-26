@@ -36,6 +36,8 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         console.log('handlesub function')
         e.preventDefault()
+        const response = auth_service.login(email, password, rememberMe)
+        console.log(response)
         dispatch(auth_service.login(email, password, rememberMe))
     }
 

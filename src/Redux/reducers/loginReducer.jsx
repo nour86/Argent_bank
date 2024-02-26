@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const loginState = {
-    isAuth: JSON.parse(window.localStorage.getItem('ArgentBank'))?.isAuth,
+    /**in case of page refresh, isAuth will take value stored in localStorage */
+    isAuth: JSON.parse(window.localStorage.getItem('ArgentBank'))?.token
+        ? true
+        : false,
     error: null,
 }
 

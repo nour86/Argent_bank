@@ -16,7 +16,6 @@ const initializeLocalStorage = async () => {
         password: '',
         token: '',
         username: '',
-        isAuth: 'false',
     }
     const payload = JSON.stringify(template)
     window.localStorage.setItem('ArgentBank', payload)
@@ -35,6 +34,14 @@ export const updateLocalStorage = async (rememberMe, props) => {
         updated_data.password = ''
     }
     console.log(updated_data)
+    const payload = JSON.stringify(updated_data)
+    window.localStorage.setItem('ArgentBank', payload)
+}
+export const removeTokenFromLocalStorage = async () => {
+    const old_data = await JSON.parse(window.localStorage.getItem('ArgentBank'))
+
+    const updated_data = { ...old_data, ...{ token: '' } }
+
     const payload = JSON.stringify(updated_data)
     window.localStorage.setItem('ArgentBank', payload)
 }
