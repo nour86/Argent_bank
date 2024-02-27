@@ -6,15 +6,17 @@ const loginState = {
         ? true
         : false,
     error: null,
+    token: JSON.parse(window.localStorage.getItem('ArgentBank'))?.token,
 }
 
 const loginSlice = createSlice({
     name: 'login',
     initialState: loginState,
     reducers: {
-        loginSuccess: (state) => {
+        loginSuccess: (state, action) => {
             state.isAuth = true
             state.error = null
+            state.token = action.payload
         },
         loginFail: (state, action) => {
             state.isAuth = false
@@ -23,6 +25,7 @@ const loginSlice = createSlice({
         logoutSuccess: (state) => {
             state.isAuth = false
             state.error = null
+            state.token = ''
         },
     },
 })

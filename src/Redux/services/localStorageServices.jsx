@@ -1,7 +1,14 @@
+const ABStorageTemplate = {
+    email: '',
+    password: '',
+    token: '',
+    username: '',
+}
+
 /** Fetch Data from local storage, if storage doest not exist we itinialize it */
 export const getDataFromLocalStorage = async () => {
+    const ArgentBankStorage = window.localStorage.getItem('ArgentBank')
     console.log('getfrom function')
-    let ArgentBankStorage = window.localStorage.getItem('ArgentBank')
     let response = ''
     ArgentBankStorage === null
         ? (response = initializeLocalStorage())
@@ -11,19 +18,15 @@ export const getDataFromLocalStorage = async () => {
 }
 
 const initializeLocalStorage = async () => {
-    const template = {
-        email: '',
-        password: '',
-        token: '',
-        username: '',
-    }
-    const payload = JSON.stringify(template)
+    const ArgentBankStorage = window.localStorage.getItem('ArgentBank')
+    const payload = JSON.stringify(ABStorageTemplate)
     window.localStorage.setItem('ArgentBank', payload)
-    return template
+    return payload
 }
 
 export const updateLocalStorage = async (rememberMe, props) => {
-    const old_data = await JSON.parse(window.localStorage.getItem('ArgentBank'))
+    const ArgentBankStorage = window.localStorage.getItem('ArgentBank')
+    const old_data = await JSON.parse(ArgentBankStorage)
     let new_data = {}
     props.forEach((prop) => (new_data = { ...new_data, ...prop }))
 
@@ -38,7 +41,8 @@ export const updateLocalStorage = async (rememberMe, props) => {
     window.localStorage.setItem('ArgentBank', payload)
 }
 export const removeTokenFromLocalStorage = async () => {
-    const old_data = await JSON.parse(window.localStorage.getItem('ArgentBank'))
+    const ArgentBankStorage = window.localStorage.getItem('ArgentBank')
+    const old_data = await JSON.parse(ArgentBankStorage)
 
     const updated_data = { ...old_data, ...{ token: '' } }
 

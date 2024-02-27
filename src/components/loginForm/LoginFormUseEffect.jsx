@@ -22,12 +22,11 @@ const LoginForm = () => {
             setPassword(savedPassword)
             setRememberMe(true)
         } else {
-            /***  Sinon, réinitialise les champs d'e-mail et de mot de passe ***/
             setEmail('')
             setPassword('')
             setRememberMe(false)
         }
-    }, []) /*** Exécuter à l'ouverture de la page ***/
+    }, [])
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)

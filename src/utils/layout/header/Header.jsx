@@ -4,7 +4,6 @@ import Logo from '../../../assets/images/argentBankLogo.png'
 import { MainNav } from '../../../components/mainNav/MainNav'
 
 function Header() {
-    console.log('Header rerender')
     return (
         <header>
             <nav className="main-nav">

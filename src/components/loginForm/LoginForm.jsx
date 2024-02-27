@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useLoaderData, Navigate } from 'react-router-dom'
+import { updateLocalStorage } from '../../Redux/services/localStorageServices'
 import { useDispatch, useSelector } from 'react-redux'
 import auth_service from '../../Redux/services/apiServices'
 
@@ -16,9 +17,6 @@ const LoginForm = () => {
     const isAuth = useSelector((state) => state.login.isAuth)
     const error = useSelector((state) => state.login.error)
 
-    console.log(rememberMe)
-    console.log('loginForm rerender')
-
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
         setPassword('')
@@ -33,12 +31,17 @@ const LoginForm = () => {
         setRememberMe(!rememberMe)
     }
 
-    const handleSubmit = (e) => {
-        console.log('handlesub function')
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const response = auth_service.login(email, password, rememberMe)
-        console.log(response)
-        dispatch(auth_service.login(email, password, rememberMe))
+        dispatch(auth_service.login(email, password)).then((apiResponse) => {
+            console.log(apiResponse)
+            apiResponse?.status == '200' &&
+                updateLocalStorage(rememberMe, [
+                    { email: email },
+                    { password: password },
+                    { token: apiResponse.body.token },
+                ])
+        })
     }
 
     return isAuth ? (

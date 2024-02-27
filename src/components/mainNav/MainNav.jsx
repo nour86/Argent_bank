@@ -8,8 +8,6 @@ export const MainNav = () => {
     const userName = useSelector((state) => state.user.userName)
     const dispatch = useDispatch()
 
-    console.log('mainNav rerender')
-
     const handleLoggOut = () => {
         isAuth && dispatch(logoutSuccess())
         removeTokenFromLocalStorage()
