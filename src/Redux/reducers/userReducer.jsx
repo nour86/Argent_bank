@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const userState = {
-    email: '',
     firstName: '',
     lastName: '',
     userName: '',
+    error: null,
 }
 
 const userSlice = createSlice({
@@ -12,12 +12,14 @@ const userSlice = createSlice({
     initialState: userState,
     reducers: {
         userSuccess: (state, action) => {
-            state.email = action.payload.body.email
             state.userName = action.payload.body.userName
             state.firstName = action.payload.body.firstName
             state.lastName = action.payload.body.lastName
+            state.error = null
         },
-        userFail: (state, action) => {},
+        userFail: (state, action) => {
+            state.error = action.payload.message
+        },
         updateUserName: (state, action) => {},
     },
 })

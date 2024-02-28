@@ -7,30 +7,42 @@ import {
 
 import { userSuccess, userFail } from '../reducers/userReducer'
 
-import { removeTokenFromLocalStorage } from './localStorageServices'
-
 /*** partie Api ***/
 const BASE_URL = 'http://localhost:3001/api/v1'
 
 /***  login function ***/
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, rememberMe) => async (dispatch) => {
     return axios
         .post(BASE_URL + '/user/login', { email, password })
         .then((response) => {
-            dispatch(loginSuccess(response.data.body.token))
-            console.log('succes')
+            dispatch(
+                rememberMe
+                    ? loginSuccess({
+                          body: {
+                              email: email,
+                              password: password,
+                              token: response.data.body.token,
+                          },
+                      })
+                    : loginSuccess({
+                          body: {
+                              email: '',
+                              password: '',
+                              token: response.data.body.token,
+                          },
+                      })
+            )
             return response.data
         })
         .catch((err) => {
             dispatch(loginFail(err.response.data.message))
-            console.log('erreur rencontrée')
             return err.response.data
         })
 }
 
 /***  Get user profile  ***/
-export const getUserProfile = (token) => (dispatch) => {
-    axios
+export const getUserProfile = (token) => async (dispatch) => {
+    return axios
         .post(
             BASE_URL + '/user/profile',
             { token },
@@ -38,16 +50,17 @@ export const getUserProfile = (token) => (dispatch) => {
         )
         .then((response) => {
             dispatch(userSuccess(response.data))
-            console.log(response.data)
+            return response.data
         })
         .catch((err) => {
-            dispatch(userFail(err.response))
+            dispatch(userFail(err.response.data))
+            console.log(err.response.data)
+            return err.response.data
         })
 }
 
 /***  Logout function ***/
 export const logout = () => (dispatch) => {
-    removeTokenFromLocalStorage()
     dispatch(logoutSuccess())
 }
 

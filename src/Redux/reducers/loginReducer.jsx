@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const loginState = {
     /**in case of page refresh, isAuth will take value stored in localStorage */
-    isAuth: JSON.parse(window.localStorage.getItem('ArgentBank'))?.token
-        ? true
-        : false,
+    isAuth: false,
     error: null,
-    token: JSON.parse(window.localStorage.getItem('ArgentBank'))?.token,
+    token: '',
+    email: '',
+    password: '',
 }
 
 const loginSlice = createSlice({
@@ -16,7 +16,9 @@ const loginSlice = createSlice({
         loginSuccess: (state, action) => {
             state.isAuth = true
             state.error = null
-            state.token = action.payload
+            state.token = action.payload.body.token
+            state.email = action.payload.body.email
+            state.password = action.payload.body.password
         },
         loginFail: (state, action) => {
             state.isAuth = false

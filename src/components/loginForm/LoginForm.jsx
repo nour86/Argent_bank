@@ -1,21 +1,21 @@
 import { useState } from 'react'
-import { useLoaderData, Navigate } from 'react-router-dom'
-import { updateLocalStorage } from '../../Redux/services/localStorageServices'
+import { Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import auth_service from '../../Redux/services/apiServices'
 
 const LoginForm = () => {
-    const localData = useLoaderData()
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState(localData.email)
-    const [password, setPassword] = useState(localData.password)
-    const [rememberMe, setRememberMe] = useState(
-        localData.email !== '' && localData.password !== ''
-    )
-
+    const savedEmail = useSelector((state) => state.login.email)
+    const savedPassword = useSelector((state) => state.login.password)
     const isAuth = useSelector((state) => state.login.isAuth)
     const error = useSelector((state) => state.login.error)
+
+    const [email, setEmail] = useState(savedEmail)
+    const [password, setPassword] = useState(savedPassword)
+    const [rememberMe, setRememberMe] = useState(
+        email !== '' && password !== ''
+    )
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
@@ -33,15 +33,7 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        dispatch(auth_service.login(email, password)).then((apiResponse) => {
-            console.log(apiResponse)
-            apiResponse?.status == '200' &&
-                updateLocalStorage(rememberMe, [
-                    { email: email },
-                    { password: password },
-                    { token: apiResponse.body.token },
-                ])
-        })
+        dispatch(auth_service.login(email, password, rememberMe))
     }
 
     return isAuth ? (
@@ -80,7 +72,13 @@ const LoginForm = () => {
                 <label htmlFor="remember-me">Remember me</label>
             </div>
             <button className="sign-in-button">Sign In</button>
-            {error !== null ? <label className="error">{error}</label> : ''}
+            {error !== null ? (
+                <div className="error-msg">
+                    <label>{error}</label>
+                </div>
+            ) : (
+                ''
+            )}
         </form>
     )
 }

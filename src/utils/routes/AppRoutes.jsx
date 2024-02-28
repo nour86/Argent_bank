@@ -6,7 +6,6 @@ import User from '../../pages/user/User'
 import Header from '../layout/header/Header'
 import Footer from '../layout/footer/Footer'
 import Error from '../../pages/error/Error'
-import { getDataFromLocalStorage } from '../../Redux/services/localStorageServices'
 
 const Layout = ({ children }) => {
     return (
@@ -23,7 +22,7 @@ export function PrivateRoute({ children }) {
     if (!isAuth) {
         return <Navigate to={'/home'} />
     } else {
-        // user not logged in, redirect to the login page
+        // user not logged in, redirect to login page
         return children
     }
 }
@@ -52,7 +51,6 @@ const router = createBrowserRouter([
                 <Login />
             </Layout>
         ),
-        loader: getDataFromLocalStorage,
     },
     {
         path: '/user',
