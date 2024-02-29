@@ -20,9 +20,12 @@ const userSlice = createSlice({
         userFail: (state, action) => {
             state.error = action.payload.message
         },
-        updateUserName: (state, action) => {},
+        userUpdateSuccess: (state, action) => {
+            state.error = null
+            state.userName = action.payload.body.userName
+        },
     },
 })
 
-export const { updateUserName, userSuccess, userFail } = userSlice.actions
+export const { userSuccess, userUpdateSuccess, userFail } = userSlice.actions
 export const userReducer = userSlice.reducer
