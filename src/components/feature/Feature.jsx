@@ -1,3 +1,5 @@
+import './Feature.style.scss'
+
 export function Feature(props) {
     return (
         <div className="feature-item">

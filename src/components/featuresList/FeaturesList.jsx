@@ -1,5 +1,6 @@
 import { Feature } from '../feature/Feature'
 const imagesPath = '../../../public/images/'
+import './FeaturesList.style.scss'
 
 export function FeaturesList() {
     return (

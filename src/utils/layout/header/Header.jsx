@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import Logo from '../../../assets/images/argentBankLogo.png'
-
 import { MainNav } from '../../../components/mainNav/MainNav'
+import './Header.style.scss'
 
 function Header() {
     return (

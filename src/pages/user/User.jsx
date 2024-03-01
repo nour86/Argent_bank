@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react'
+import { useState, useLayoutEffect, useEffect } from 'react'
 import Account from '../../components/account/Account'
 import { useDispatch, useSelector } from 'react-redux'
 import auth_service from '../../Redux/services/apiServices'
@@ -13,15 +13,22 @@ export default function User() {
     const firstName = useSelector((state) => state.user.firstName)
     const lastName = useSelector((state) => state.user.lastName)
     const loaderError = useSelector((state) => state.user.error)
+    const isRemembered = useSelector((state) => state.user.isRemembered)
+    console.log('user')
 
     const dispatch = useDispatch()
 
-    useLayoutEffect(() => {
-        dispatch(auth_service.getUserProfile(token)).then(() =>
-            setTimeout(() => {
-                setLoading(false)
-            }, 500)
-        )
+    useEffect(() => {
+        console.log('useLayout')
+        if (isRemembered == false) {
+            dispatch(auth_service.getUserProfile(token)).then(() =>
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000)
+            )
+        } else {
+            setLoading(false)
+        }
     }, [token])
 
     return (

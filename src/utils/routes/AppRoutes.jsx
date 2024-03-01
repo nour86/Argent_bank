@@ -6,6 +6,7 @@ import User from '../../pages/user/User'
 import Header from '../layout/header/Header'
 import Footer from '../layout/footer/Footer'
 import Error from '../../pages/error/Error'
+import SignUp from '../../pages/signup/SignUp'
 
 const Layout = ({ children }) => {
     return (
@@ -49,6 +50,14 @@ const router = createBrowserRouter([
         element: (
             <Layout>
                 <Login />
+            </Layout>
+        ),
+    },
+    {
+        path: '/signup',
+        element: (
+            <Layout>
+                <SignUp />
             </Layout>
         ),
     },

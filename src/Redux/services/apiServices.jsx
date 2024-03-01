@@ -3,12 +3,14 @@ import {
     loginFail,
     loginSuccess,
     logoutSuccess,
+    signUpSuccess,
 } from '../reducers/loginReducer'
 
 import {
     userSuccess,
     userFail,
     userUpdateSuccess,
+    userReset,
 } from '../reducers/userReducer'
 
 /*** partie Api ***/
@@ -58,7 +60,6 @@ export const getUserProfile = (token) => async (dispatch) => {
         })
         .catch((err) => {
             dispatch(userFail(err.response.data))
-            console.log(err.response.data)
             return err.response.data
         })
 }
@@ -75,17 +76,36 @@ export const updateProfile = (userName, token) => async (dispatch) => {
         )
         .then((response) => {
             dispatch(userUpdateSuccess(response.data))
-            console.log(response.data)
+            return response.data
         })
         .catch((err) => {
-            // dispatch(userUpdateFail(err.response))
+            return err.response.data
+        })
+}
+
+export const signUp = (formData) => async (dispatch) => {
+    const payload = Object.fromEntries(formData.entries())
+    return axios
+        .post(BASE_URL + '/user/signup', payload, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => {
+            console.log(response)
+            dispatch(signUpSuccess(response.data))
+            return response.data
+        })
+        .catch((err) => {
+            return err.response.data
         })
 }
 
 /***  Logout function ***/
-export const logout = () => (dispatch) => {
+export const logout = () => async (dispatch) => {
+    dispatch(userReset())
     dispatch(logoutSuccess())
 }
 
-const auth_service = { login, getUserProfile, logout, updateProfile }
+const auth_service = { login, getUserProfile, logout, updateProfile, signUp }
 export default auth_service

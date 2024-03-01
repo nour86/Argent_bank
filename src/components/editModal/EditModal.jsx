@@ -1,3 +1,5 @@
+import './EditModal.style.scss'
+
 import ReactModal from 'react-modal'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,6 +22,7 @@ export const EditModal = ({ firstName, lastName }) => {
     const userName = useSelector((state) => state.user.userName)
     const token = useSelector((state) => state.login.token)
     const [newUserName, setNewUserName] = useState(userName)
+    const [ApiAnswer, setAnswer] = useState('')
     const dispatch = useDispatch()
 
     let subtitle
@@ -29,22 +32,27 @@ export const EditModal = ({ firstName, lastName }) => {
         setIsOpen(true)
     }
 
-    // function afterOpenModal() {
-    //     // references are now sync'd and can be accessed.
-    //     subtitle.style.color = '#f00'
-    // }
-
     function closeModal() {
+        setAnswer('')
         setIsOpen(false)
     }
     const submit = (e) => {
         e.preventDefault()
-        console.log('bla')
-        dispatch(auth_service.updateProfile(newUserName, token)).then(
-            setTimeout(() => {
-                closeModal()
-            }, 500)
-        )
+        setAnswer('chargement...')
+        setTimeout(() => {
+            dispatch(auth_service.updateProfile(newUserName, token)).then(
+                (response) => {
+                    if (response.status == '200') {
+                        setAnswer('Username successuffly updated')
+                        setTimeout(() => {
+                            closeModal()
+                        }, 1000)
+                    } else {
+                        setAnswer('Something went wrong')
+                    }
+                }
+            )
+        }, 500)
     }
 
     return (
@@ -98,6 +106,7 @@ export const EditModal = ({ firstName, lastName }) => {
                             Save
                         </button>
                         <button
+                            type="button"
                             className="edit-button-option"
                             onClick={() => {
                                 setNewUserName(userName)
@@ -107,6 +116,7 @@ export const EditModal = ({ firstName, lastName }) => {
                             Cancel
                         </button>
                     </div>
+                    <p>{ApiAnswer}</p>
                 </form>
             </ReactModal>
         </div>

@@ -29,8 +29,13 @@ const loginSlice = createSlice({
             state.error = null
             state.token = ''
         },
+        signUpSuccess: (state, action) => {
+            state.email = action.payload.body.email
+            state.password = action.payload.body.password
+        },
     },
 })
 
-export const { loginSuccess, loginFail, logoutSuccess } = loginSlice.actions
+export const { loginSuccess, loginFail, logoutSuccess, signUpSuccess } =
+    loginSlice.actions
 export const loginReducer = loginSlice.reducer

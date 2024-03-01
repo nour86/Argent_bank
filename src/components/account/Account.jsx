@@ -1,3 +1,5 @@
+import './Account.style.scss'
+
 const Account = (props) => {
     return (
         <section className={`account ${props.editing ? 'editing' : ''}`}>

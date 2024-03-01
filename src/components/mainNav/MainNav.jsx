@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutSuccess } from '../../Redux/reducers/loginReducer'
+import auth_service from '../../Redux/services/apiServices'
 import { NavLink } from 'react-router-dom'
 
 export const MainNav = () => {
@@ -8,7 +8,7 @@ export const MainNav = () => {
     const dispatch = useDispatch()
 
     const handleLoggOut = () => {
-        isAuth && dispatch(logoutSuccess())
+        dispatch(auth_service.logout())
         // removeTokenFromLocalStorage()
     }
 
