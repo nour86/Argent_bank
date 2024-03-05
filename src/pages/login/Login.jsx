@@ -1,9 +1,14 @@
 import './Login.style.scss'
 import LoginForm from '../../components/loginForm/LoginForm'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function Login() {
-    return (
+    const isAuth = useSelector((state) => state.login.isAuth)
+
+    return isAuth ? (
+        <Navigate replace to="/user" />
+    ) : (
         <main className="main bg-dark">
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>

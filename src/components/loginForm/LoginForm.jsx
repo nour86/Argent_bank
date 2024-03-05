@@ -10,7 +10,6 @@ const LoginForm = () => {
 
     const savedEmail = useSelector((state) => state.login.email)
     const savedPassword = useSelector((state) => state.login.password)
-    const isAuth = useSelector((state) => state.login.isAuth)
     const error = useSelector((state) => state.login.error)
 
     const [email, setEmail] = useState(savedEmail)
@@ -38,9 +37,7 @@ const LoginForm = () => {
         dispatch(auth_service.login(email, password, rememberMe))
     }
 
-    return isAuth ? (
-        <Navigate replace to="/user" />
-    ) : (
+    return (
         <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
                 <label htmlFor="email">Email</label>

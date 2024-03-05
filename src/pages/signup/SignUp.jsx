@@ -5,10 +5,8 @@ export default function SignUp() {
     const dispatch = useDispatch()
 
     const handleSubmit = (e) => {
-        console.log('handlesub function')
         e.preventDefault()
         const formData = new FormData(e.target)
-
         dispatch(auth_service.signUp(formData))
     }
 

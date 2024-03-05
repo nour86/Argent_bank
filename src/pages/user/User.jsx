@@ -12,29 +12,30 @@ export default function User() {
 
     const firstName = useSelector((state) => state.user.firstName)
     const lastName = useSelector((state) => state.user.lastName)
+
     const loaderError = useSelector((state) => state.user.error)
-    const isRemembered = useSelector((state) => state.user.isRemembered)
-    console.log('user')
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log('useLayout')
-        if (isRemembered == false) {
+        if (firstName == '') {
+            /**will only trigger when the page is reached for the first time */
+            console.log('UseEffect if...')
             dispatch(auth_service.getUserProfile(token)).then(() =>
                 setTimeout(() => {
                     setLoading(false)
                 }, 1000)
             )
         } else {
+            console.log('UseEffect else...')
             setLoading(false)
         }
-    }, [token])
+    }, [])
 
     return (
         <main className="bg-dark">
             {loading ? (
-                <h1> chargement... </h1>
+                <h1> Chargement... </h1>
             ) : loaderError ? (
                 <h1> Une erreur est survenue... </h1>
             ) : (
