@@ -9,6 +9,10 @@
     background-color: #00bc77;
     color: #fff;
 }
+.sign-in-button:disabled {
+    border-color: black;
+    background-color: grey;
+}
 
 .input-remember {
     display: flex;
