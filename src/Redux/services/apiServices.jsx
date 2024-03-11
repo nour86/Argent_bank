@@ -85,7 +85,6 @@ export const updateProfile = (userName, token) => async (dispatch) => {
 
 export const signUp = (formData) => async (dispatch) => {
     const payload = Object.fromEntries(formData.entries())
-    console.log(payload)
     return axios
         .post(BASE_URL + '/user/signup', payload, {
             headers: {
