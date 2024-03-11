@@ -1,9 +1,13 @@
+import './SignUp.style.scss'
+
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import auth_service, { signUp } from '../../Redux/services/apiServices'
+import auth_service from '../../Redux/services/apiServices'
 
 export default function SignUp() {
     const dispatch = useDispatch()
+    const [apiMessage, setMessage] = useState('')
+
     const [formValues, setFormValues] = useState({
         firstName: { value: '', error: '' },
         lastName: { value: '', error: '' },
@@ -12,21 +16,21 @@ export default function SignUp() {
         password: { value: '', error: '' },
     })
     // prettier-ignore
-    const formErrors = {
+    const formPattern = {
         firstName: { 
             pattern: '\^[A-Z-a-z\\ \-]{3,}$',
             message:'at least 3 letters'
         },
         lastName: { 
             pattern: '\^\[A-Z-a-z\\ \-]{3,20}$',
-            message:'20 letters max'
+            message:'between 3 and 20 characters'
         },
         userName: {
             pattern: '\.*',
             message:''
         },
         email: {
-            pattern: "^[\\w-\\.]+@([\\w\-]+\\.)+[\\w-]{2,4}$",
+            pattern: "^[\\w-\\.]{2,}@([\\w\-]+\\.)+[\\w-]{2,4}$",
             message:'please provide a valid email' 
         },
         password: {
@@ -53,42 +57,41 @@ export default function SignUp() {
 
     function validateField(fieldName) {
         const valueToTest = formValues[fieldName].value
-        const regex = new RegExp(formErrors[fieldName].pattern, 'g')
+        const regex = new RegExp(formPattern[fieldName].pattern, 'g')
         const result = regex.test(valueToTest)
         return result
     }
 
     function validateForm() {
         let formisValid = true
+        let newFormValues = { ...formValues }
 
         const keys = Object.keys(formValues)
         for (const key of keys) {
             if (validateField(key) == false) {
-                setFormValues({
-                    ...formValues,
+                newFormValues = {
+                    ...newFormValues,
                     [key]: {
                         value: formValues[key].value,
-                        error: formErrors[key].message,
+                        error: formPattern[key].message,
                     },
-                })
+                }
                 formisValid = false
             }
         }
+        setFormValues(newFormValues)
         return formisValid
     }
-
-    console.log(formValues)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (validateForm() == false) {
-            console.log('form invalide')
-        } else console.log('form valide')
-
-        // console.log(e.target.firstName.value)
-        // const formData = new FormData(e.target)
-        // dispatch(auth_service.signUp(formData))
+        if (validateForm() == true) {
+            const formData = new FormData(e.target)
+            dispatch(auth_service.signUp(formData)).then((response) =>
+                setMessage(response.message)
+            )
+        }
     }
 
     return (
@@ -105,7 +108,9 @@ export default function SignUp() {
                             value={formValues.firstName.value}
                             onChange={handleChange}
                         />
-                        <p>{formValues.firstName.error}</p>
+                        <p className="error-message">
+                            {formValues.firstName.error}
+                        </p>
                     </div>
                     <div className="input-wrapper">
                         <label htmlFor="lastName">Last name*</label>
@@ -115,7 +120,9 @@ export default function SignUp() {
                             value={formValues.lastName.value}
                             onChange={handleChange}
                         />
-                        <p>{formValues.lastName.error}</p>
+                        <p className="error-message">
+                            {formValues.lastName.error}
+                        </p>
                     </div>
                     <div className="input-wrapper">
                         <label htmlFor="userName">User name</label>
@@ -125,7 +132,9 @@ export default function SignUp() {
                             value={formValues.userName.value}
                             onChange={handleChange}
                         />
-                        <p>{formValues.userName.error}</p>
+                        <p className="error-message">
+                            {formValues.userName.error}
+                        </p>
                     </div>
                     <div className="input-wrapper">
                         <label htmlFor="email">Email*</label>
@@ -135,7 +144,9 @@ export default function SignUp() {
                             value={formValues.email.value}
                             onChange={handleChange}
                         />
-                        <p>{formValues.email.error}</p>
+                        <p className="error-message">
+                            {formValues.email.error}
+                        </p>
                     </div>
                     <div className="input-wrapper">
                         <label htmlFor="password">Password*</label>
@@ -145,7 +156,9 @@ export default function SignUp() {
                             value={formValues.password.value}
                             onChange={handleChange}
                         />
-                        <p>{formValues.password.error}</p>
+                        <p className="error-message">
+                            {formValues.password.error}
+                        </p>
                     </div>
 
                     <button
@@ -155,6 +168,7 @@ export default function SignUp() {
                     >
                         Sign Up
                     </button>
+                    <p>{apiMessage}</p>
                 </form>
             </section>
         </main>

@@ -62,7 +62,6 @@ export const EditModal = ({ firstName, lastName }) => {
             </button>
             <ReactModal
                 isOpen={modalIsOpen}
-                // onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 style={customStyles}
                 contentLabel="Example Modal"
@@ -78,6 +77,7 @@ export const EditModal = ({ firstName, lastName }) => {
                                 onChange={(e) => {
                                     setNewUserName(e.target.value)
                                 }}
+                                placeholder={userName}
                                 value={newUserName}
                                 required
                             />

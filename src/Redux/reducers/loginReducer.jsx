@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const loginState = {
-    /**in case of page refresh, isAuth will take value stored in localStorage */
     isAuth: false,
     error: null,
     token: '',
@@ -30,12 +29,20 @@ const loginSlice = createSlice({
             state.token = ''
         },
         signUpSuccess: (state, action) => {
-            state.email = action.payload.body.email
-            state.password = action.payload.body.password
+            state.email = action.payload.email
+            state.password = action.payload.password
+        },
+        signUpFail: (state, action) => {
+            state.error = action.payload.message
         },
     },
 })
 
-export const { loginSuccess, loginFail, logoutSuccess, signUpSuccess } =
-    loginSlice.actions
+export const {
+    loginSuccess,
+    loginFail,
+    logoutSuccess,
+    signUpSuccess,
+    signUpFail,
+} = loginSlice.actions
 export const loginReducer = loginSlice.reducer

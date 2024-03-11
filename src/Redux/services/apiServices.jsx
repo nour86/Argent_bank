@@ -18,7 +18,6 @@ const BASE_URL = 'http://localhost:3001/api/v1'
 
 /***  login function ***/
 export const login = (email, password, rememberMe) => async (dispatch) => {
-    console.log('function login')
     return axios
         .post(BASE_URL + '/user/login', { email, password })
         .then((response) => {
@@ -85,8 +84,8 @@ export const updateProfile = (userName, token) => async (dispatch) => {
 }
 
 export const signUp = (formData) => async (dispatch) => {
-    console.log('create profile')
     const payload = Object.fromEntries(formData.entries())
+    console.log(payload)
     return axios
         .post(BASE_URL + '/user/signup', payload, {
             headers: {
@@ -94,8 +93,12 @@ export const signUp = (formData) => async (dispatch) => {
             },
         })
         .then((response) => {
-            console.log(response)
-            dispatch(signUpSuccess(response.data))
+            dispatch(
+                signUpSuccess({
+                    email: payload.email,
+                    password: payload.password,
+                })
+            )
             return response.data
         })
         .catch((err) => {

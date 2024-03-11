@@ -5,9 +5,6 @@ import auth_service from '../../Redux/services/apiServices'
 import EditModal from '../../components/editModal/EditModal'
 
 export default function User() {
-    console.log('User rerender')
-    const [loading, setLoading] = useState(true)
-
     const token = useSelector((state) => state.login.token)
 
     const firstName = useSelector((state) => state.user.firstName)
@@ -20,23 +17,13 @@ export default function User() {
     useEffect(() => {
         if (firstName == '') {
             /**will only trigger when the page is reached for the first time */
-            console.log('UseEffect if...')
-            dispatch(auth_service.getUserProfile(token)).then(() =>
-                setTimeout(() => {
-                    setLoading(false)
-                }, 1000)
-            )
-        } else {
-            console.log('UseEffect else...')
-            setLoading(false)
+            dispatch(auth_service.getUserProfile(token))
         }
     }, [])
 
     return (
         <main className="bg-dark">
-            {loading ? (
-                <h1> Chargement... </h1>
-            ) : loaderError ? (
+            {loaderError ? (
                 <h1> Une erreur est survenue... </h1>
             ) : (
                 <>

@@ -14,7 +14,7 @@ export default function Login() {
                 <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>
                 <LoginForm />
-                <NavLink to="/signup" className="main-nav-logo">
+                <NavLink to="/signup" className="nav-link">
                     New here? Sign up
                 </NavLink>
             </section>
