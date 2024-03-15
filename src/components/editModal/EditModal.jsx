@@ -63,7 +63,7 @@ export const EditModal = ({ firstName, lastName }) => {
             <ReactModal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
-                style={customStyles}
+                className="customModal"
                 contentLabel="Example Modal"
             >
                 <form className="edit-inputs-buttons" onSubmit={submit}>

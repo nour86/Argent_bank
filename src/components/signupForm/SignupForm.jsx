@@ -101,7 +101,7 @@ export default function SignUpForm() {
                 <label htmlFor="firstName">First name*</label>
                 <input
                     name="firstName"
-                    className={formValues.firstName.error && 'invalid'}
+                    className={+formValues.firstName.error && 'invalid'}
                     type="text"
                     value={formValues.firstName.value}
                     onChange={handleChange}
@@ -114,7 +114,7 @@ export default function SignUpForm() {
                 <label htmlFor="lastName">Last name*</label>
                 <input
                     name="lastName"
-                    className={formValues.lastName.error && 'invalid'}
+                    className={+formValues.lastName.error && 'invalid'}
                     type="text"
                     value={formValues.lastName.value}
                     onChange={handleChange}
@@ -127,7 +127,7 @@ export default function SignUpForm() {
                 <label htmlFor="userName">User name</label>
                 <input
                     name="userName"
-                    className={formValues.userName.error && 'invalid'}
+                    className={+formValues.userName.error && 'invalid'}
                     type="text"
                     value={formValues.userName.value}
                     onChange={handleChange}
@@ -140,7 +140,7 @@ export default function SignUpForm() {
                 <label htmlFor="email">Email*</label>
                 <input
                     name="email"
-                    className={formValues.email.error && 'invalid'}
+                    className={+formValues.email.error && 'invalid'}
                     type="email"
                     value={formValues.email.value}
                     onChange={handleChange}
@@ -153,7 +153,7 @@ export default function SignUpForm() {
                 <label htmlFor="password">Password*</label>
                 <input
                     name="password"
-                    className={formValues.password.error && 'invalid'}
+                    className={+formValues.password.error && 'invalid'}
                     type="password"
                     value={formValues.password.value}
                     onChange={handleChange}
@@ -172,17 +172,16 @@ export default function SignUpForm() {
                 Sign Up
             </button>
 
-            <p
-                className={
-                    error ? 'validation-message error' : 'validation-message'
-                }
-            >
+            <p className={`validation-message ${+error && 'error'}`}>
                 {apiMessage}
             </p>
-            <NavLink to="/login" className={!signedUp && ' hidden'}>
-                <i className="fa fa-user-circle"></i>
-                Navigate to login
-            </NavLink>
+
+            {signedUp && (
+                <NavLink to="/login">
+                    <i className="fa fa-user-circle"></i>
+                    Navigate to login
+                </NavLink>
+            )}
         </form>
     )
 }

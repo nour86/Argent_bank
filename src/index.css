@@ -47,22 +47,6 @@ body {
     margin-bottom: 2rem;
 }
 
-.section-error {
-    color: white;
-    padding-bottom: 20px;
-    font-weight: bold;
-}
-
-.section-error a {
-    color: white;
-    text-decoration: none;
-    font-weight: 400;
-}
-
-.section-error a:hover {
-    text-decoration: underline;
-}
-
 /* added */
 
 .error-msg {
