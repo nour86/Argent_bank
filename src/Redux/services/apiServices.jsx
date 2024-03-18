@@ -38,11 +38,9 @@ export const login = (email, password, rememberMe) => async (dispatch) => {
                           },
                       })
             )
-            return response.data
         })
         .catch((err) => {
             dispatch(loginFail(err.response.data.message))
-            return err.response.data
         })
 }
 

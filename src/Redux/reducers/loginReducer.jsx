@@ -28,6 +28,7 @@ const loginSlice = createSlice({
             state.error = null
             state.token = ''
         },
+
         signUpSuccess: (state, action) => {
             state.email = action.payload.email
             state.password = action.payload.password

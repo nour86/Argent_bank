@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
 export function PrivateRoute({ children }) {
     const isAuth = useSelector((state) => state.login.isAuth)
     if (!isAuth) {
-        return <Navigate to={'/home'} />
+        return <Navigate to={'/login'} />
     } else {
         return children
     }
