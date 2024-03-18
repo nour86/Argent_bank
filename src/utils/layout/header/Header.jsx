@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import Logo from '../../../assets/images/argentBankLogo.png'
+import Logo from '../../../../public/images/argentBankLogo.webp'
 import { MainNav } from '../../../components/mainNav/MainNav'
 import './Header.style.scss'
 

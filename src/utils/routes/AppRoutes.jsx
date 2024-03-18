@@ -23,7 +23,6 @@ export function PrivateRoute({ children }) {
     if (!isAuth) {
         return <Navigate to={'/home'} />
     } else {
-        // user not logged in, redirect to login page
         return children
     }
 }
